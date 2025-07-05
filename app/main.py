@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from datetime import timedelta
 import uvicorn
-from fastapi_mcp import FastApiMCP
+from fastapi_mcp import AuthConfig, FastApiMCP
 from . import models, schemas, crud, auth
 from .database import engine, get_db
 from .config import settings
@@ -132,7 +132,11 @@ mcp = FastApiMCP(app,include_operations=[
     "read_item_id",
     "update_item",
     "delete_item"
-])
+],
+auth_config=AuthConfig(
+        dependencies=[Depends(auth.get_current_active_user)],
+    )
+)
 
 mcp.mount()
 if __name__ == "__main__":
