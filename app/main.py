@@ -23,6 +23,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.get("/")
+async def root():
+    return {
+        "message": "Welcome to the FastAPI CRUD App with JWT Authentication",
+        "docs": "/docs",
+        "redoc": "/redoc"
+    }
+
 # Token endpoint
 @app.post("/token", response_model=schemas.Token)
 async def login_for_access_token(
